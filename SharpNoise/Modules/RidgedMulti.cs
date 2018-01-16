@@ -117,7 +117,7 @@ namespace SharpNoise.Modules
         /// </remarks>
         public double Lacunarity
         {
-            get { return lacunarity; }
+            get => lacunarity;
             set
             {
                 lacunarity = value;
@@ -140,7 +140,7 @@ namespace SharpNoise.Modules
         /// </remarks>
         public int OctaveCount
         {
-            get { return octaves; }
+            get => octaves;
             set
             {
                 if (value > MaxOctaves)
@@ -155,9 +155,9 @@ namespace SharpNoise.Modules
         /// </summary>
         public int Seed { get; set; } = DefaultSeed;
 
-        double[] spectralWeights;
-        double lacunarity;
-        int octaves;
+        private double[] spectralWeights;
+        private double lacunarity;
+        private int octaves;
 
         /// <summary>
         /// Constructor.
@@ -176,11 +176,11 @@ namespace SharpNoise.Modules
         {
             // This exponent parameter should be user-defined; it may be exposed in a
             // future version of libnoise.
-            double h = 1.0;
+            var h = 1.0;
 
             spectralWeights = new double[MaxOctaves];
 
-            double frequency = 1.0;
+            var frequency = 1.0;
             for (var i = 0; i < MaxOctaves; i++)
             {
                 // Compute weight for each frequency.
@@ -198,19 +198,19 @@ namespace SharpNoise.Modules
             y *= Frequency;
             z *= Frequency;
 
-            double signal = 0.0;
-            double value = 0.0;
-            double weight = 1.0;
+            var signal = 0.0;
+            var value = 0.0;
+            var weight = 1.0;
 
             // These parameters should be user-defined; they may be exposed in a
             // future version of libnoise.
-            double offset = 1.0;
-            double gain = 2.0;
+            var offset = 1.0;
+            var gain = 2.0;
 
             for (var curOctave = 0; curOctave < OctaveCount; curOctave++)
             {
                 // Get the coherent-noise value.
-                int seed = (Seed + curOctave) & 0x7fffffff;
+                var seed = (Seed + curOctave) & 0x7fffffff;
                 signal = NoiseGenerator.GradientCoherentNoise3D(x, y, z, seed, Quality);
 
                 // Make the ridges.
@@ -232,7 +232,7 @@ namespace SharpNoise.Modules
                     weight = 0.0;
 
                 // Add the signal to the output value.
-                value += (signal * spectralWeights[curOctave]);
+                value += signal * spectralWeights[curOctave];
 
                 // Go to the next octave.
                 x *= Lacunarity;
@@ -240,7 +240,7 @@ namespace SharpNoise.Modules
                 z *= Lacunarity;
             }
 
-            return (value * 1.25) - 1.0;
+            return value * 1.25 - 1.0;
         }
     }
 }

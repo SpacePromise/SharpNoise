@@ -85,15 +85,15 @@ namespace SharpNoise.Builders
 
             Parallel.For(0, destDepth, po, z =>
             {
-                double zCur = LowerZBound + z * zDelta;
+                var zCur = LowerZBound + z * zDelta;
 
-                double yCur = LowerYBound;
+                var yCur = LowerYBound;
                 for (var y = 0; y < destHeight; y++)
                 {
-                    double xCur = LowerXBound;
+                    var xCur = LowerXBound;
                     for (var x = 0; x < destWidth; x++)
                     {
-                        float finalValue = (float)SourceModule.GetValue(xCur, yCur, zCur);
+                        var finalValue = (float)SourceModule.GetValue(xCur, yCur, zCur);
                         xCur += xDelta;
                         DestNoiseCube[x, y, z] = finalValue;
                     }

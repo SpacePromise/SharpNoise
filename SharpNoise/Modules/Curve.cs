@@ -103,15 +103,15 @@ namespace SharpNoise.Modules
             }
         }
 
-        readonly List<ControlPoint> controlPoints;
+        private readonly List<ControlPoint> controlPoints;
 
         /// <summary>
         /// Gets or sets the first source module
         /// </summary>
         public Module Source0
         {
-            get { return SourceModules[0]; }
-            set { SourceModules[0] = value; }
+            get => SourceModules[0];
+            set => SourceModules[0] = value;
         }
 
         /// <summary>
@@ -157,10 +157,7 @@ namespace SharpNoise.Modules
         /// </summary>
         public IEnumerable<ControlPoint> ControlPoints
         {
-            get
-            {
-                return controlPoints.AsReadOnly();
-            }
+            get => controlPoints.AsReadOnly();
             set
             {
                 controlPoints.Clear();
@@ -172,13 +169,7 @@ namespace SharpNoise.Modules
         /// Gets the number of control points on the curve
         /// </summary>
         /// <returns>Returns the number of control points on the curve</returns>
-        public int ControlPointCount
-        {
-            get
-            {
-                return controlPoints.Count;
-            }
-        }
+        public int ControlPointCount => controlPoints.Count;
 
         /// <summary>
         /// See the documentation on the base class.

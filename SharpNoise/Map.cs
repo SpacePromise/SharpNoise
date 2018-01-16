@@ -15,25 +15,19 @@ namespace SharpNoise
         /// </summary>
         public sealed class LineIterator : IEnumerator<T>, IEnumerable<T>
         {
-            int currentIndex;
-            T currentItem;
+            private int currentIndex;
+            private T currentItem;
 
-            readonly Map<T> map;
-            readonly int lowerIndex, upperIndex;
+            private readonly Map<T> map;
+            private readonly int lowerIndex, upperIndex;
 
-            public T Current
-            {
-                get { return currentItem; }
-            }
+            public T Current => currentItem;
 
             public void Dispose()
             {
             }
 
-            object IEnumerator.Current
-            {
-                get { return currentItem; }
-            }
+            object IEnumerator.Current => currentItem;
 
             public bool MoveNext()
             {
@@ -100,13 +94,7 @@ namespace SharpNoise
         /// <summary>
         /// Gets a value indicating whether the Map is empty
         /// </summary>
-        public bool IsEmpty
-        {
-            get
-            {
-                return values == null;
-            }
-        }
+        public bool IsEmpty => values == null;
 
         /// <summary>
         /// Constructor for an empty Map.
@@ -138,7 +126,7 @@ namespace SharpNoise
         protected Map(Map<T> other)
         {
             if (other == null)
-                throw new ArgumentNullException("other");
+                throw new ArgumentNullException(nameof(other));
 
             SetSize(other.Height, other.Width);
             other.values.CopyTo(values, 0);
@@ -195,13 +183,7 @@ namespace SharpNoise
         /// <remarks>
         /// This should be used for bulk reading of values.
         /// </remarks>
-        public T[] Data
-        {
-            get
-            {
-                return values;
-            }
-        }
+        public T[] Data => values;
 
         /// <summary>
         /// Create a LineIterator for the specified row in the Map.
@@ -278,14 +260,8 @@ namespace SharpNoise
         /// </remarks>
         public T this[int x, int y]
         {
-            get
-            {
-                return GetValue(x, y);
-            }
-            set
-            {
-                SetValue(x, y, value);
-            }
+            get => GetValue(x, y);
+            set => SetValue(x, y, value);
         }
 
         /// <summary>

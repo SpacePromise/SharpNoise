@@ -44,9 +44,9 @@ namespace SharpNoise
         /// <summary>
         /// Gets a value indicating whether the Cube is empty
         /// </summary>
-        public bool IsEmpty { get { return values == null; } }
+        public bool IsEmpty => values == null;
 
-        float[] values;
+        private float[] values;
 
         public NoiseCube()
         {
@@ -64,7 +64,7 @@ namespace SharpNoise
         public NoiseCube(NoiseCube other)
         {
             if (other == null)
-                throw new ArgumentNullException("other");
+                throw new ArgumentNullException(nameof(other));
 
             SetSize(other.Width, other.Height, other.Depth);
             other.values.CopyTo(values, 0);
@@ -137,11 +137,11 @@ namespace SharpNoise
         /// </remarks>
         public float this[int x, int y, int z]
         {
-            get { return GetValue(x, y, z); }
-            set { SetValue(x, y, z, value); }
+            get => GetValue(x, y, z);
+            set => SetValue(x, y, z, value);
         }
 
-        int GetIndex(int x, int y, int z)
+        private int GetIndex(int x, int y, int z)
         {
             return x + Width * y + Width * Height * z;
         }
@@ -208,29 +208,29 @@ namespace SharpNoise
         {
             var dest = new NoiseCube(width, height, depth);
 
-            float xratio = (float)src.Width / dest.Width;
-            float yratio = (float)src.Height / dest.Height;
-            float zratio = (float)src.Depth / dest.Depth;
+            var xratio = (float)src.Width / dest.Width;
+            var yratio = (float)src.Height / dest.Height;
+            var zratio = (float)src.Depth / dest.Depth;
 
             Parallel.For(0, dest.Depth, z =>
             {
-                for (int y = 0; y < dest.Height; ++y)
-                    for (int x = 0; x < dest.Width; ++x)
+                for (var y = 0; y < dest.Height; ++y)
+                    for (var x = 0; x < dest.Width; ++x)
                     {
-                        float u = (x + 0.5f) * xratio - 0.5f;
-                        float v = (y + 0.5f) * yratio - 0.5f;
-                        float w = (z + 0.5f) * zratio - 0.5f;
+                        var u = (x + 0.5f) * xratio - 0.5f;
+                        var v = (y + 0.5f) * yratio - 0.5f;
+                        var w = (z + 0.5f) * zratio - 0.5f;
 
-                        int x0 = NoiseMath.FastFloor(u);
-                        int y0 = NoiseMath.FastFloor(v);
-                        int z0 = NoiseMath.FastFloor(w);
-                        int x1 = x0 + 1;
-                        int y1 = y0 + 1;
-                        int z1 = z0 + 1;
+                        var x0 = NoiseMath.FastFloor(u);
+                        var y0 = NoiseMath.FastFloor(v);
+                        var z0 = NoiseMath.FastFloor(w);
+                        var x1 = x0 + 1;
+                        var y1 = y0 + 1;
+                        var z1 = z0 + 1;
 
-                        float xf = u - x0;
-                        float yf = v - y0;
-                        float zf = w - z0;
+                        var xf = u - x0;
+                        var yf = v - y0;
+                        var zf = w - z0;
 
                         if (clamp)
                         {
@@ -242,16 +242,16 @@ namespace SharpNoise
                             z1 = NoiseMath.Clamp(z1, 0, src.Depth - 1);
                         }
 
-                        float c000 = src.GetValue(x0, y0, z0);
-                        float c001 = src.GetValue(x0, y0, z1);
-                        float c010 = src.GetValue(x0, y1, z0);
-                        float c011 = src.GetValue(x0, y1, z1);
-                        float c100 = src.GetValue(x1, y0, z0);
-                        float c101 = src.GetValue(x1, y0, z1);
-                        float c110 = src.GetValue(x1, y1, z0);
-                        float c111 = src.GetValue(x1, y1, z1);
+                        var c000 = src.GetValue(x0, y0, z0);
+                        var c001 = src.GetValue(x0, y0, z1);
+                        var c010 = src.GetValue(x0, y1, z0);
+                        var c011 = src.GetValue(x0, y1, z1);
+                        var c100 = src.GetValue(x1, y0, z0);
+                        var c101 = src.GetValue(x1, y0, z1);
+                        var c110 = src.GetValue(x1, y1, z0);
+                        var c111 = src.GetValue(x1, y1, z1);
 
-                        float val = NoiseMath.Trilinear(xf, yf, zf,
+                        var val = NoiseMath.Trilinear(xf, yf, zf,
                             c000, c001, c010, c011, c100, c101, c110, c111);
 
                         dest.SetValue(x, y, z, val);

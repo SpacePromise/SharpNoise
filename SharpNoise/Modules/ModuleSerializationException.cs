@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace SharpNoise.Modules
 {
     /// <summary>
-    /// The exception that indicates that an error has occured during serialization or deserialization of a module
+    /// The exception that indicates that an error has occurred during serialization or deserialization of a module
     /// </summary>
     [Serializable]
     public class ModuleSerializationException : Exception

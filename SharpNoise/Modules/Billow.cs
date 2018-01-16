@@ -115,16 +115,16 @@ namespace SharpNoise.Modules
         /// <returns>Returns the computed value</returns>
         public override double GetValue(double x, double y, double z)
         {
-            double value = 0.0;
-            double signal = 0.0;
-            double currentPersistence = 1.0;
+            var value = 0.0;
+            var signal = 0.0;
+            var currentPersistence = 1.0;
             int seed;
 
             x *= Frequency;
             y *= Frequency;
             z *= Frequency;
 
-            for (int currentOctave = 0; currentOctave < OctaveCount; currentOctave++)
+            for (var currentOctave = 0; currentOctave < OctaveCount; currentOctave++)
             {
                 // Get the coherent-noise value from the input value and add it to the final result.
                 seed = (Seed + currentOctave) & int.MaxValue;

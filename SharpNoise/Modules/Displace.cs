@@ -55,8 +55,8 @@ namespace SharpNoise.Modules
         /// </summary>
         public Module Source0
         {
-            get { return SourceModules[0]; }
-            set { SourceModules[0] = value; }
+            get => SourceModules[0];
+            set => SourceModules[0] = value;
         }
 
         /// <summary>
@@ -70,8 +70,8 @@ namespace SharpNoise.Modules
         /// </remarks>
         public Module XDisplace
         {
-            get { return SourceModules[1]; }
-            set { SourceModules[1] = value; }
+            get => SourceModules[1];
+            set => SourceModules[1] = value;
         }
 
         /// <summary>
@@ -85,8 +85,8 @@ namespace SharpNoise.Modules
         /// </remarks>
         public Module YDisplace
         {
-            get { return SourceModules[2]; }
-            set { SourceModules[2] = value; }
+            get => SourceModules[2];
+            set => SourceModules[2] = value;
         }
 
         /// <summary>
@@ -100,8 +100,8 @@ namespace SharpNoise.Modules
         /// </remarks>
         public Module ZDisplace
         {
-            get { return SourceModules[3]; }
-            set { SourceModules[3] = value; }
+            get => SourceModules[3];
+            set => SourceModules[3] = value;
         }
 
         /// <summary>
@@ -156,9 +156,9 @@ namespace SharpNoise.Modules
         {
             // Get the output values from the three displacement modules.  Add each
             // value to the corresponding coordinate in the input value.
-            var xDisplace = x + (SourceModules[1].GetValue(x, y, z));
-            var yDisplace = y + (SourceModules[2].GetValue(x, y, z));
-            var zDisplace = z + (SourceModules[3].GetValue(x, y, z));
+            var xDisplace = x + SourceModules[1].GetValue(x, y, z);
+            var yDisplace = y + SourceModules[2].GetValue(x, y, z);
+            var zDisplace = z + SourceModules[3].GetValue(x, y, z);
 
             // Retrieve the output value using the offsetted input value instead of
             // the original input value.

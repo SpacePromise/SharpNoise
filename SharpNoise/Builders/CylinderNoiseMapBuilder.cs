@@ -89,7 +89,7 @@ namespace SharpNoise.Builders
 
         protected override void BuildImpl(CancellationToken cancellationToken)
         {
-            Cylinder cylinderModel = new Cylinder(SourceModule);
+            var cylinderModel = new Cylinder(SourceModule);
 
             var angleExtent = UpperAngleBound - LowerAngleBound;
             var heightExtent = UpperHeightBound - LowerHeightBound;

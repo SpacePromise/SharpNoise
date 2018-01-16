@@ -44,11 +44,11 @@ namespace SharpNoise
         /// </remarks>
         public static double Cubic(double n0, double n1, double n2, double n3, double a)
         {
-            var p = (n3 - n2) - (n0 - n1);
-            var q = (n0 - n1) - p;
+            var p = n3 - n2 - (n0 - n1);
+            var q = n0 - n1 - p;
             var r = n2 - n0;
             var s = n1;
-            return (p * a * a * a) + (q * a * a * a) + (r * a) + s;
+            return p * a * a * a + q * a * a * a + r * a + s;
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace SharpNoise
         /// </remarks>
         public static double Linear(double n0, double n1, double a)
         {
-            return ((1D - a) * n0) + (a * n1);
+            return (1D - a) * n0 + a * n1;
         }
 
         /// <summary>
@@ -96,8 +96,8 @@ namespace SharpNoise
         public static float Bilinear(float x, float y,
             float x0y0, float x0y1, float x1y0, float x1y1)
         {
-            float c0 = Linear(x0y0, x1y0, x);
-            float c1 = Linear(x0y1, x1y1, x);
+            var c0 = Linear(x0y0, x1y0, x);
+            var c1 = Linear(x0y1, x1y1, x);
 
             return Linear(c0, c1, y);
         }
@@ -114,13 +114,13 @@ namespace SharpNoise
             float x0y0z0, float x0y0z1, float x0y1z0, float x0y1z1,
             float x1y0z0, float x1y0z1, float x1y1z0, float x1y1z1)
         {
-            float c00 = Linear(x0y0z0, x1y0z0, x);
-            float c10 = Linear(x0y1z0, x1y1z0, x);
-            float c01 = Linear(x0y0z1, x1y0z1, x);
-            float c11 = Linear(x0y1z1, x1y1z1, x);
+            var c00 = Linear(x0y0z0, x1y0z0, x);
+            var c10 = Linear(x0y1z0, x1y1z0, x);
+            var c01 = Linear(x0y0z1, x1y0z1, x);
+            var c11 = Linear(x0y1z1, x1y1z1, x);
 
-            float c0 = Linear(c00, c10, y);
-            float c1 = Linear(c01, c11, y);
+            var c0 = Linear(c00, c10, y);
+            var c1 = Linear(c01, c11, y);
 
             return Linear(c0, c1, z);
         }
@@ -160,7 +160,7 @@ namespace SharpNoise
             var a3 = a * a * a;
             var a4 = a3 * a;
             var a5 = a4 * a;
-            return (6.0 * a5) - (15.0 * a4) + (10.0 * a3);
+            return 6.0 * a5 - 15.0 * a4 + 10.0 * a3;
         }
 
         /// <summary>
@@ -235,7 +235,7 @@ namespace SharpNoise
         /// <returns>Returns the floored value as an integer</returns>
         public static int FastFloor(double x)
         {
-            int xi = (int)x;
+            var xi = (int)x;
             return x < xi ? xi - 1 : xi;
         }
     }

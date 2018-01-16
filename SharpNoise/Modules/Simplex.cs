@@ -52,7 +52,7 @@ namespace SharpNoise.Modules
 
         static Simplex()
         {
-            for (int i = 0; i < 512; i++)
+            for (var i = 0; i < 512; i++)
             {
                 Perm[i] = P[i & 255];
                 PermMod12[i] = (short)(Perm[i] % 12);
@@ -69,20 +69,20 @@ namespace SharpNoise.Modules
         {
             // Skew the input space to determine which simplex cell we're in
             // Very nice and simple skew factor for 3D
-            double s = (xin + yin + zin) * F3;
-            int i = NoiseMath.FastFloor(xin + s);
-            int j = NoiseMath.FastFloor(yin + s);
-            int k = NoiseMath.FastFloor(zin + s);
+            var s = (xin + yin + zin) * F3;
+            var i = NoiseMath.FastFloor(xin + s);
+            var j = NoiseMath.FastFloor(yin + s);
+            var k = NoiseMath.FastFloor(zin + s);
 
-            double t = (i + j + k) * G3;
+            var t = (i + j + k) * G3;
             // Unskew the cell origin back to (x,y,z) space
-            double X0 = i - t;
-            double Y0 = j - t;
-            double Z0 = k - t;
+            var X0 = i - t;
+            var Y0 = j - t;
+            var Z0 = k - t;
             // The x,y,z distances from the cell origin
-            double x0 = xin - X0;
-            double y0 = yin - Y0;
-            double z0 = zin - Z0;
+            var x0 = xin - X0;
+            var y0 = yin - Y0;
+            var z0 = zin - Z0;
 
             // For the 3D case, the simplex shape is a slightly irregular tetrahedron.
             // Determine which simplex we are in.
@@ -159,20 +159,20 @@ namespace SharpNoise.Modules
             // a step of (0,1,0) in (i,j,k) means a step of (-c,1-c,-c) in (x,y,z), and
             // a step of (0,0,1) in (i,j,k) means a step of (-c,-c,1-c) in (x,y,z), where
             // c = 1/6.
-            double x1 = x0 - i1 + G3; // Offsets for second corner in (x,y,z) coords
-            double y1 = y0 - j1 + G3;
-            double z1 = z0 - k1 + G3;
-            double x2 = x0 - i2 + 2.0 * G3; // Offsets for third corner in (x,y,z) coords
-            double y2 = y0 - j2 + 2.0 * G3;
-            double z2 = z0 - k2 + 2.0 * G3;
-            double x3 = x0 - 1.0 + 3.0 * G3; // Offsets for last corner in (x,y,z) coords
-            double y3 = y0 - 1.0 + 3.0 * G3;
-            double z3 = z0 - 1.0 + 3.0 * G3;
+            var x1 = x0 - i1 + G3; // Offsets for second corner in (x,y,z) coords
+            var y1 = y0 - j1 + G3;
+            var z1 = z0 - k1 + G3;
+            var x2 = x0 - i2 + 2.0 * G3; // Offsets for third corner in (x,y,z) coords
+            var y2 = y0 - j2 + 2.0 * G3;
+            var z2 = z0 - k2 + 2.0 * G3;
+            var x3 = x0 - 1.0 + 3.0 * G3; // Offsets for last corner in (x,y,z) coords
+            var y3 = y0 - 1.0 + 3.0 * G3;
+            var z3 = z0 - 1.0 + 3.0 * G3;
 
             // Work out the hashed gradient indices of the four simplex corners
-            int ii = i & 255;
-            int jj = j & 255;
-            int kk = k & 255;
+            var ii = i & 255;
+            var jj = j & 255;
+            var kk = k & 255;
             int gi0 = PermMod12[ii + Perm[jj + Perm[kk]]];
             int gi1 = PermMod12[ii + i1 + Perm[jj + j1 + Perm[kk + k1]]];
             int gi2 = PermMod12[ii + i2 + Perm[jj + j2 + Perm[kk + k2]]];
@@ -182,28 +182,28 @@ namespace SharpNoise.Modules
             double n0 = 0.0, n1 = 0.0, n2 = 0.0, n3 = 0.0;
 
             // Calculate the contribution from the four corners
-            double t0 = 0.6 - x0 * x0 - y0 * y0 - z0 * z0;
+            var t0 = 0.6 - x0 * x0 - y0 * y0 - z0 * z0;
             if (t0 >= 0)
             {
                 t0 *= t0;
                 n0 = t0 * t0 * Dot(ref Grad3[gi0], x0, y0, z0);
             }
 
-            double t1 = 0.6 - x1 * x1 - y1 * y1 - z1 * z1;
+            var t1 = 0.6 - x1 * x1 - y1 * y1 - z1 * z1;
             if (t1 >= 0)
             {
                 t1 *= t1;
                 n1 = t1 * t1 * Dot(ref Grad3[gi1], x1, y1, z1);
             }
 
-            double t2 = 0.6 - x2 * x2 - y2 * y2 - z2 * z2;
+            var t2 = 0.6 - x2 * x2 - y2 * y2 - z2 * z2;
             if (t2 >= 0)
             {
                 t2 *= t2;
                 n2 = t2 * t2 * Dot(ref Grad3[gi2], x2, y2, z2);
             }
 
-            double t3 = 0.6 - x3 * x3 - y3 * y3 - z3 * z3;
+            var t3 = 0.6 - x3 * x3 - y3 * y3 - z3 * z3;
             if (t3 >= 0)
             {
                 t3 *= t3;
@@ -284,9 +284,9 @@ namespace SharpNoise.Modules
         /// <returns>The computed value</returns>
         public override double GetValue(double x, double y, double z)
         {
-            double value = 0D;
-            double signal = 0D;
-            double currentPersistence = 1D;
+            var value = 0D;
+            var signal = 0D;
+            var currentPersistence = 1D;
 
             x *= Frequency;
             y *= Frequency;

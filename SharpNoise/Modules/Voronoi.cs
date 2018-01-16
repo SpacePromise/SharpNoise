@@ -129,11 +129,11 @@ namespace SharpNoise.Modules
             y *= Frequency;
             z *= Frequency;
 
-            var xint = (x > 0D) ? (int)x : (int)x - 1;
-            var yint = (y > 0D) ? (int)y : (int)y - 1;
-            var zint = (z > 0D) ? (int)z : (int)z - 1;
+            var xint = x > 0D ? (int)x : (int)x - 1;
+            var yint = y > 0D ? (int)y : (int)y - 1;
+            var zint = z > 0D ? (int)z : (int)z - 1;
 
-            double minDistance = double.MaxValue;
+            var minDistance = double.MaxValue;
             double xCandidate = 0D, yCandidate = 0D, zCandidate = 0D;
 
             // Inside each unit cube, there is a seed point at a random position.  Go
@@ -175,14 +175,14 @@ namespace SharpNoise.Modules
                 var xDist = xCandidate - x;
                 var yDist = yCandidate - y;
                 var zDist = zCandidate - z;
-                value = (Math.Sqrt(xDist * xDist + yDist * yDist + zDist * zDist)) * NoiseMath.Sqrt3 - 1.0;
+                value = Math.Sqrt(xDist * xDist + yDist * yDist + zDist * zDist) * NoiseMath.Sqrt3 - 1.0;
             }
 
             // Return the calculated distance with the displacement value applied.
-            return value + (Displacement * NoiseGenerator.ValueNoise3D(
-                (int)Math.Floor(xCandidate), 
-                (int)Math.Floor(yCandidate), 
-                (int)Math.Floor(zCandidate)));
+            return value + Displacement * NoiseGenerator.ValueNoise3D(
+                       (int)Math.Floor(xCandidate), 
+                       (int)Math.Floor(yCandidate), 
+                       (int)Math.Floor(zCandidate));
         }
 
         /// <summary>

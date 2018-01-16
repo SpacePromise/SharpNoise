@@ -211,10 +211,8 @@ namespace SharpNoise.Modules
         /// <returns>Returns the computed value</returns>
         public override double GetValue(double x, double y, double z)
         {
-            double value = 0D;
-            double signal = 0D;
-            double currentPersistence = 1D;
-            int seed;
+            var value = 0D;
+            var currentPersistence = 1D;
 
             x *= Frequency;
             y *= Frequency;
@@ -222,8 +220,8 @@ namespace SharpNoise.Modules
 
             for (var currentOctave = 0; currentOctave < OctaveCount; currentOctave++)
             {
-                seed = (Seed + currentOctave) & int.MaxValue;
-                signal = NoiseGenerator.GradientCoherentNoise3D(x, y, z, seed, Quality);
+                var seed = (this.Seed + currentOctave) & int.MaxValue;
+                var signal = NoiseGenerator.GradientCoherentNoise3D(x, y, z, seed, this.Quality);
                 value += signal * currentPersistence;
 
                 x *= Lacunarity;

@@ -66,7 +66,7 @@ namespace SharpNoise.Modules
             var distFromSmallerSphere = distFromCenter - Math.Floor(distFromCenter);
             var distFromLargerSphere = 1.0 - distFromSmallerSphere;
             var nearestDist = Math.Min(distFromSmallerSphere, distFromLargerSphere);
-            return 1.0 - (nearestDist * 4.0); // Puts it in the -1.0 to +1.0 range.
+            return 1.0 - nearestDist * 4.0; // Puts it in the -1.0 to +1.0 range.
         }
     }
 }

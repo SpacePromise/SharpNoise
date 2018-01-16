@@ -33,7 +33,7 @@ namespace SharpNoise.Modules
     [Serializable]
     public class Cache : Module, IDeserializationCallback, IDisposable
     {
-        class CacheEntry
+        private class CacheEntry
         {
             public double x;
             public double y;
@@ -43,16 +43,15 @@ namespace SharpNoise.Modules
 
         private bool disposedValue = false;
 
-        [NonSerialized]
-        ThreadLocal<CacheEntry> localCacheEntry = new ThreadLocal<CacheEntry>();
+        [NonSerialized] private ThreadLocal<CacheEntry> localCacheEntry = new ThreadLocal<CacheEntry>();
 
         /// <summary>
         /// Gets or sets the first source module
         /// </summary>
         public Module Source0
         {
-            get { return SourceModules[0]; }
-            set { SourceModules[0] = value; }
+            get => SourceModules[0];
+            set => SourceModules[0] = value;
         }
 
         /// <summary>
@@ -86,7 +85,7 @@ namespace SharpNoise.Modules
         /// <returns>Returns the computed value</returns>
         public override double GetValue(double x, double y, double z)
         {
-            CacheEntry cached = localCacheEntry.Value;
+            var cached = localCacheEntry.Value;
 
             if (cached != null)
             {
