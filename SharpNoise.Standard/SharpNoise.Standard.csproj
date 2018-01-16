@@ -1,0 +1,73 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>A loose port of libNoise to C#</Description>
+    <Authors>Raffael Thome</Authors>
+    <Product>SharpNoise</Product>
+    <Copyright>Copyright © Raffael Thome 2012-2016</Copyright>
+    <AssemblyVersion>0.11.0.0</AssemblyVersion>
+    <FileVersion>0.11.0.0</FileVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.11.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\SharpNoise\Builders\CylinderNoiseMapBuilder.cs" Link="Builders\CylinderNoiseMapBuilder.cs" />
+    <Compile Include="..\SharpNoise\Builders\LinearNoiseCubeBuilder.cs" Link="Builders\LinearNoiseCubeBuilder.cs" />
+    <Compile Include="..\SharpNoise\Builders\NoiseCubeBuilder.cs" Link="Builders\NoiseCubeBuilder.cs" />
+    <Compile Include="..\SharpNoise\Builders\NoiseMapBuilder.cs" Link="Builders\NoiseMapBuilder.cs" />
+    <Compile Include="..\SharpNoise\Builders\PlaneNoiseMapBuilder.cs" Link="Builders\PlaneNoiseMapBuilder.cs" />
+    <Compile Include="..\SharpNoise\Builders\SphereNoiseMapBuilder.cs" Link="Builders\SphereNoiseMapBuilder.cs" />
+    <Compile Include="..\SharpNoise\Map.cs" Link="Map.cs" />
+    <Compile Include="..\SharpNoise\Models\Cylinder.cs" Link="Models\Cylinder.cs" />
+    <Compile Include="..\SharpNoise\Models\Line.cs" Link="Models\Line.cs" />
+    <Compile Include="..\SharpNoise\Models\Model.cs" Link="Models\Model.cs" />
+    <Compile Include="..\SharpNoise\Models\Plane.cs" Link="Models\Plane.cs" />
+    <Compile Include="..\SharpNoise\Models\Sphere.cs" Link="Models\Sphere.cs" />
+    <Compile Include="..\SharpNoise\Modules\Abs.cs" Link="Modules\Abs.cs" />
+    <Compile Include="..\SharpNoise\Modules\Add.cs" Link="Modules\Add.cs" />
+    <Compile Include="..\SharpNoise\Modules\Billow.cs" Link="Modules\Billow.cs" />
+    <Compile Include="..\SharpNoise\Modules\Blend.cs" Link="Modules\Blend.cs" />
+    <Compile Include="..\SharpNoise\Modules\Cache.cs" Link="Modules\Cache.cs" />
+    <Compile Include="..\SharpNoise\Modules\Checkerboard.cs" Link="Modules\Checkerboard.cs" />
+    <Compile Include="..\SharpNoise\Modules\Clamp.cs" Link="Modules\Clamp.cs" />
+    <Compile Include="..\SharpNoise\Modules\Constant.cs" Link="Modules\Constant.cs" />
+    <Compile Include="..\SharpNoise\Modules\Curve.cs" Link="Modules\Curve.cs" />
+    <Compile Include="..\SharpNoise\Modules\Cylinders.cs" Link="Modules\Cylinders.cs" />
+    <Compile Include="..\SharpNoise\Modules\Displace.cs" Link="Modules\Displace.cs" />
+    <Compile Include="..\SharpNoise\Modules\Exponent.cs" Link="Modules\Exponent.cs" />
+    <Compile Include="..\SharpNoise\Modules\Invert.cs" Link="Modules\Invert.cs" />
+    <Compile Include="..\SharpNoise\Modules\Max.cs" Link="Modules\Max.cs" />
+    <Compile Include="..\SharpNoise\Modules\Min.cs" Link="Modules\Min.cs" />
+    <Compile Include="..\SharpNoise\Modules\Module.cs" Link="Modules\Module.cs" />
+    <Compile Include="..\SharpNoise\Modules\ModuleSerializationException.cs" Link="Modules\ModuleSerializationException.cs" />
+    <Compile Include="..\SharpNoise\Modules\Multiply.cs" Link="Modules\Multiply.cs" />
+    <Compile Include="..\SharpNoise\Modules\NoModuleException.cs" Link="Modules\NoModuleException.cs" />
+    <Compile Include="..\SharpNoise\Modules\Perlin.cs" Link="Modules\Perlin.cs" />
+    <Compile Include="..\SharpNoise\Modules\Power.cs" Link="Modules\Power.cs" />
+    <Compile Include="..\SharpNoise\Modules\RidgedMulti.cs" Link="Modules\RidgedMulti.cs" />
+    <Compile Include="..\SharpNoise\Modules\RotatePoint.cs" Link="Modules\RotatePoint.cs" />
+    <Compile Include="..\SharpNoise\Modules\ScaleBias.cs" Link="Modules\ScaleBias.cs" />
+    <Compile Include="..\SharpNoise\Modules\ScalePoint.cs" Link="Modules\ScalePoint.cs" />
+    <Compile Include="..\SharpNoise\Modules\Select.cs" Link="Modules\Select.cs" />
+    <Compile Include="..\SharpNoise\Modules\Simplex.cs" Link="Modules\Simplex.cs" />
+    <Compile Include="..\SharpNoise\Modules\Spheres.cs" Link="Modules\Spheres.cs" />
+    <Compile Include="..\SharpNoise\Modules\Terrace.cs" Link="Modules\Terrace.cs" />
+    <Compile Include="..\SharpNoise\Modules\TranslatePoint.cs" Link="Modules\TranslatePoint.cs" />
+    <Compile Include="..\SharpNoise\Modules\Turbulence.cs" Link="Modules\Turbulence.cs" />
+    <Compile Include="..\SharpNoise\Modules\Voronoi.cs" Link="Modules\Voronoi.cs" />
+    <Compile Include="..\SharpNoise\NoiseCube.cs" Link="NoiseCube.cs" />
+    <Compile Include="..\SharpNoise\NoiseGenerator.cs" Link="NoiseGenerator.cs" />
+    <Compile Include="..\SharpNoise\NoiseMap.cs" Link="NoiseMap.cs" />
+    <Compile Include="..\SharpNoise\NoiseMath.cs" Link="NoiseMath.cs" />
+    <Compile Include="..\SharpNoise\NoiseQuality.cs" Link="NoiseQuality.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Builders\" />
+    <Folder Include="Models\" />
+    <Folder Include="Modules\" />
+  </ItemGroup>
+
+</Project>
