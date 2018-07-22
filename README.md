@@ -1,5 +1,11 @@
 # SharpNoise
 
+## SpacePromise fork details
+
+Feed source: `https://www.myget.org/F/spacepromise/api/v3/index.json`
+
+## Details
+
 A library for generating coherent noise. It can be used to procedurally create natural-looking textures (such as wood, stone, or clouds), terrain heightmaps, and other things.
 
 SharpNoise is a loose port of Jason Bevins' [libNoise](http://libnoise.sourceforge.net/) to C#. It adds some .NET features such as serialization and support for [C# Object Initializer syntax](http://msdn.microsoft.com/en-us/library/bb384062.aspx). SharpNoise is published unter the terms of the Gnu LGPL 3.
