@@ -5,8 +5,12 @@ install:
     - nuget restore SharpNoise.sln
     - nuget restore Examples/SharpNoiseSamples.sln
 script:
-    - msbuild /p:TargetFrameworkVersion="v4.5" /p:Configuration=Release SharpNoise.sln
-    - msbuild /p:TargetFrameworkVersion="v4.5" /p:Configuration=Debug SharpNoise.sln
+    - msbuild /p:TargetFrameworkVersion="v4.5" /p:Configuration=Release SharpNoise.Utilities/SharpNoise.Utilities.csproj
+    - msbuild /p:TargetFrameworkVersion="v4.5" /p:Configuration=Debug SharpNoise.Utilities/SharpNoise.Utilities.csproj
+    - msbuild /p:TargetFrameworkVersion="v4.5" /p:Configuration=Release SharpNoise/SharpNoise.csproj
+    - msbuild /p:TargetFrameworkVersion="v4.5" /p:Configuration=Debug SharpNoise/SharpNoise.csproj
+    - msbuild /p:Configuration=Release SharpNoise.Standard/SharpNoise.Standard.csproj
+    - msbuild /p:Configuration=Debug SharpNoise.Standard/SharpNoise.Standard.csproj
     - msbuild /p:TargetFrameworkVersion="v4.5" /p:Configuration=Release Examples/SharpNoiseSamples.sln
     - msbuild /p:TargetFrameworkVersion="v4.5" /p:Configuration=Debug Examples/SharpNoiseSamples.sln
     - mono ./packages/xunit.runner.console.*/tools/xunit.console.exe ./SharpNoise.Tests/bin/Release/SharpNoise.Tests.dll
