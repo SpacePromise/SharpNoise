@@ -2,6 +2,8 @@
 
 ## SpacePromise fork details
 
+`SpacePromise/SharpNoise` [![Build Status](https://travis-ci.org/SpacePromise/SharpNoise.svg?branch=master)](https://travis-ci.org/SpacePromise/SharpNoise)
+
 Feed source: `https://www.myget.org/F/spacepromise/api/v3/index.json`
 
 ## Details
