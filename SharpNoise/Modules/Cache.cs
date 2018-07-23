@@ -35,13 +35,13 @@ namespace SharpNoise.Modules
     {
         private class CacheEntry
         {
-            public double x;
-            public double y;
-            public double z;
-            public double value;
+            public double X;
+            public double Y;
+            public double Z;
+            public double Value;
         }
 
-        private bool disposedValue = false;
+        private bool disposedValue;
 
         [NonSerialized] private ThreadLocal<CacheEntry> localCacheEntry = new ThreadLocal<CacheEntry>();
 
@@ -89,20 +89,20 @@ namespace SharpNoise.Modules
 
             if (cached != null)
             {
-                if (cached.x == x && cached.y == y && cached.z == z)
-                    return cached.value;
+                if (cached.X == x && cached.Y == y && cached.Z == z)
+                    return cached.Value;
             }
             else
             {
                 localCacheEntry.Value = cached = new CacheEntry();
             }
 
-            cached.value = SourceModules[0].GetValue(x, y, z);
-            cached.x = x;
-            cached.y = y;
-            cached.z = z;
+            cached.Value = SourceModules[0].GetValue(x, y, z);
+            cached.X = x;
+            cached.Y = y;
+            cached.Z = z;
 
-            return cached.value;
+            return cached.Value;
         }
 
         /// <summary>

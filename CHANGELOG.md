@@ -1,5 +1,10 @@
 # SharpNoise Changelog
 
+## [0.11.1]
+
+- Created `SharpNoise.Standard` package targeting .NET Standard 2.0
+- Minor code changes/updates
+
 ## 0.11.0 (in development)
 
 - Moved project to GitHub (from Bitbucket)

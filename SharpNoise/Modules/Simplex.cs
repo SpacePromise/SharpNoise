@@ -47,8 +47,8 @@ namespace SharpNoise.Modules
             138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180
         };
 
-        private static short[] Perm = new short[512];
-        private static short[] PermMod12 = new short[512];
+        private static readonly short[] Perm = new short[512];
+        private static readonly short[] PermMod12 = new short[512];
 
         static Simplex()
         {
