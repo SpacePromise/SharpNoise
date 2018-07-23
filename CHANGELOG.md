@@ -1,5 +1,9 @@
 # SharpNoise Changelog
 
+## [0.11.2] - 2018-07-23
+### Added
+- Modules: `Discrete` module (by @InfiniteProductions)
+
 ## [0.11.1]
 
 - Created `SharpNoise.Standard` package targeting .NET Standard 2.0

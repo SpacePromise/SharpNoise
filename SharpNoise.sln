@@ -11,7 +11,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpNoise.Tests", "SharpNo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Standard", "Standard", "{41EA8BD1-5680-4814-BFFC-2F614EACBC79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpNoise.Standard", "SharpNoise.Standard\SharpNoise.Standard.csproj", "{3A60F7D7-D29C-4B11-A4D1-E73739C2AC1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpNoise.Standard", "SharpNoise.Standard\SharpNoise.Standard.csproj", "{3A60F7D7-D29C-4B11-A4D1-E73739C2AC1F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{574CDA7E-49C7-450B-BC58-5B83ACF36367}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		.travis.yml = .travis.yml
+		CHANGELOG.md = CHANGELOG.md
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

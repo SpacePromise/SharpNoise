@@ -26,15 +26,15 @@ namespace SharpNoise.Modules
         /// Gets or sets the number of maximum values to get from
         /// input value.
         /// </summary>
-        public UInt16 Values { get; set; }
+        public ushort Values { get; set; }
 
         /// <summary>
         /// Gets or sets the first, and only, source module
         /// </summary>
         public Module Source0
         {
-            get { return SourceModules[0]; }
-            set { SourceModules[0] = value; }
+            get => SourceModules[0];
+            set => SourceModules[0] = value;
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace SharpNoise.Modules
         /// <returns>Returns the computed value</returns>
         public override double GetValue(double x, double y, double z)
         {
-            double srcModValue = SourceModules[0].GetValue(x, y, z);
+            var srcModValue = SourceModules[0].GetValue(x, y, z);
 
             if (srcModValue <= 0)
             {
