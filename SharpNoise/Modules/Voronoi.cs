@@ -83,7 +83,7 @@ namespace SharpNoise.Modules
         /// near-zero value) causes this noise module to generate cracked mud
         /// formations.
         /// </remarks>
-        public bool EnableDistance { get; set; }
+        public bool EnableDistance { get; set; } = DefaultEnableDistance;
 
         /// <summary>
         /// Gets or sets the displacement value of the Voronoi cells.
@@ -94,7 +94,7 @@ namespace SharpNoise.Modules
         /// value controls the range of random values to assign to each
         /// cell.  The range of random values is +/- the displacement value.
         /// </remarks>
-        public double Displacement { get; set; }
+        public double Displacement { get; set; } = DefaultDisplacement;
 
         /// <summary>
         /// Gets or sets the frequency of the seed points.
@@ -103,7 +103,7 @@ namespace SharpNoise.Modules
         /// The frequency determines the size of the Voronoi cells and the
         /// distance between these cells.
         /// </remarks>
-        public double Frequency { get; set; }
+        public double Frequency { get; set; } = DefaultFrequency;
 
         /// <summary>
         /// Gets or sets the seed value used by the Voronoi cells
@@ -113,7 +113,7 @@ namespace SharpNoise.Modules
         /// coherent-noise function.  By modifying the seed value, the output
         /// of that function changes.
         /// </remarks>
-        public int Seed { get; set; }
+        public int Seed { get; set; } = DefaultSeed;
 
         /// <summary>
         /// See the documentation on the base class.
@@ -129,11 +129,11 @@ namespace SharpNoise.Modules
             y *= Frequency;
             z *= Frequency;
 
-            var xint = (x > 0D) ? (int)x : (int)x - 1;
-            var yint = (y > 0D) ? (int)y : (int)y - 1;
-            var zint = (z > 0D) ? (int)z : (int)z - 1;
+            var xint = x > 0D ? (int)x : (int)x - 1;
+            var yint = y > 0D ? (int)y : (int)y - 1;
+            var zint = z > 0D ? (int)z : (int)z - 1;
 
-            double minDistance = double.MaxValue;
+            var minDistance = double.MaxValue;
             double xCandidate = 0D, yCandidate = 0D, zCandidate = 0D;
 
             // Inside each unit cube, there is a seed point at a random position.  Go
@@ -175,14 +175,14 @@ namespace SharpNoise.Modules
                 var xDist = xCandidate - x;
                 var yDist = yCandidate - y;
                 var zDist = zCandidate - z;
-                value = (Math.Sqrt(xDist * xDist + yDist * yDist + zDist * zDist)) * NoiseMath.Sqrt3 - 1.0;
+                value = Math.Sqrt(xDist * xDist + yDist * yDist + zDist * zDist) * NoiseMath.Sqrt3 - 1.0;
             }
 
             // Return the calculated distance with the displacement value applied.
-            return value + (Displacement * NoiseGenerator.ValueNoise3D(
-                (int)Math.Floor(xCandidate), 
-                (int)Math.Floor(yCandidate), 
-                (int)Math.Floor(zCandidate)));
+            return value + Displacement * NoiseGenerator.ValueNoise3D(
+                       (int)Math.Floor(xCandidate), 
+                       (int)Math.Floor(yCandidate), 
+                       (int)Math.Floor(zCandidate));
         }
 
         /// <summary>
@@ -191,10 +191,6 @@ namespace SharpNoise.Modules
         public Voronoi()
             : base(0)
         {
-            Displacement = DefaultDisplacement;
-            EnableDistance = DefaultEnableDistance;
-            Frequency = DefaultFrequency;
-            Seed = DefaultSeed;
         }
     }
 }

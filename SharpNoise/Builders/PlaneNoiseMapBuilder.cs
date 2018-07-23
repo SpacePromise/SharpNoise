@@ -92,7 +92,7 @@ namespace SharpNoise.Builders
 
         protected override void BuildImpl(CancellationToken cancellationToken)
         {
-            Plane planeModel = new Plane(SourceModule);
+            var planeModel = new Plane(SourceModule);
 
             var xExtent = UpperXBound - LowerXBound;
             var zExtent = UpperZBound - LowerZBound;
@@ -106,7 +106,7 @@ namespace SharpNoise.Builders
 
             Parallel.For(0, destHeight, po, z =>
             {
-                double zCur = LowerZBound + z * zDelta;
+                var zCur = LowerZBound + z * zDelta;
 
                 int x;
                 double xCur;
@@ -122,8 +122,8 @@ namespace SharpNoise.Builders
                         var seValue = planeModel.GetValue(xCur + xExtent, zCur);
                         var nwValue = planeModel.GetValue(xCur, zCur + zExtent);
                         var neValue = planeModel.GetValue(xCur + xExtent, zCur + zExtent);
-                        var xBlend = 1.0 - ((xCur - LowerXBound) / xExtent);
-                        var zBlend = 1.0 - ((zCur - LowerZBound) / zExtent);
+                        var xBlend = 1.0 - (xCur - LowerXBound) / xExtent;
+                        var zBlend = 1.0 - (zCur - LowerZBound) / zExtent;
                         var z0 = NoiseMath.Linear(swValue, seValue, xBlend);
                         var z1 = NoiseMath.Linear(nwValue, neValue, xBlend);
                         finalValue = (float)NoiseMath.Linear(z0, z1, zBlend);

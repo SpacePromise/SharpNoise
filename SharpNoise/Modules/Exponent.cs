@@ -27,8 +27,8 @@ namespace SharpNoise.Modules
         /// </summary>
         public Module Source0
         {
-            get { return SourceModules[0]; }
-            set { SourceModules[0] = value; }
+            get => SourceModules[0];
+            set => SourceModules[0] = value;
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace SharpNoise.Modules
         /// range becomes 0.0 to 1.0), maps that value onto an exponential
         /// curve, then rescales that value back to the original range.
         /// </remarks>
-        public double Exp { get; set; }
+        public double Exp { get; set; } = DefaultExponent;
 
         /// <summary>
         /// Constructor.
@@ -49,7 +49,6 @@ namespace SharpNoise.Modules
         public Exponent()
             : base(1)
         {
-            Exp = DefaultExponent;
         }
 
         /// <summary>
@@ -62,8 +61,8 @@ namespace SharpNoise.Modules
         /// <returns>Returns the computed value</returns>
         public override double GetValue(double x, double y, double z)
         {
-            double value = SourceModules[0].GetValue(x, y, z);
-            return (Math.Pow(Math.Abs((value + 1.0) / 2.0), Exp) * 2.0 - 1.0);
+            var value = SourceModules[0].GetValue(x, y, z);
+            return Math.Pow(Math.Abs((value + 1.0) / 2.0), Exp) * 2.0 - 1.0;
         }
     }
 }

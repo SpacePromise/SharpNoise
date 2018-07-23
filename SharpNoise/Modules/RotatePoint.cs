@@ -39,8 +39,8 @@ namespace SharpNoise.Modules
         /// </summary>
         public Module Source0
         {
-            get { return SourceModules[0]; }
-            set { SourceModules[0] = value; }
+            get => SourceModules[0];
+            set => SourceModules[0] = value;
         }
 
         /// <summary>
@@ -49,14 +49,8 @@ namespace SharpNoise.Modules
         /// </summary>
         public double XAngle
         {
-            get
-            {
-                return xAngle;
-            }
-            set
-            {
-                SetAngles(value, yAngle, zAngle);
-            }
+            get => xAngle;
+            set => SetAngles(value, yAngle, zAngle);
         }
 
         /// <summary>
@@ -65,14 +59,8 @@ namespace SharpNoise.Modules
         /// </summary>
         public double YAngle
         {
-            get
-            {
-                return yAngle;
-            }
-            set
-            {
-                SetAngles(xAngle, value, zAngle);
-            }
+            get => yAngle;
+            set => SetAngles(xAngle, value, zAngle);
         }
 
         /// <summary>
@@ -81,14 +69,8 @@ namespace SharpNoise.Modules
         /// </summary>
         public double ZAngle
         {
-            get
-            {
-                return zAngle;
-            }
-            set
-            {
-                SetAngles(xAngle, yAngle, value);
-            }
+            get => zAngle;
+            set => SetAngles(xAngle, yAngle, value);
         }
 
         /// <summary>
@@ -98,6 +80,7 @@ namespace SharpNoise.Modules
             : base(1)
         {
             matrix = new double[3, 3];
+            SetAngles(DefaultRotation, DefaultRotation, DefaultRotation);
         }
 
         /// <summary>
@@ -142,9 +125,9 @@ namespace SharpNoise.Modules
         /// <returns>Returns the computed value</returns>
         public override double GetValue(double x, double y, double z)
         {
-            var nx = (matrix[0, 0] * x) + (matrix[1, 0] * y) + (matrix[2, 0] * z);
-            var ny = (matrix[0, 1] * x) + (matrix[1, 1] * y) + (matrix[2, 1] * z);
-            var nz = (matrix[0, 2] * x) + (matrix[1, 2] * y) + (matrix[2, 2] * z);
+            var nx = matrix[0, 0] * x + matrix[1, 0] * y + matrix[2, 0] * z;
+            var ny = matrix[0, 1] * x + matrix[1, 1] * y + matrix[2, 1] * z;
+            var nz = matrix[0, 2] * x + matrix[1, 2] * y + matrix[2, 2] * z;
             return SourceModules[0].GetValue(nx, ny, nz);
         }
     }

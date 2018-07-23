@@ -273,11 +273,11 @@ namespace SharpNoise.Modules
         /// Returns the number of source modules required by this noise
         /// module.
         /// </summary>
-        public int SourceModuleCount { get { return sourceModules.Length; } }
+        public int SourceModuleCount => sourceModules.Length;
 
-        public Module[] SourceModules { get { return sourceModules; } }
+        public Module[] SourceModules => sourceModules;
 
-        static readonly Module[] emptyModulesArray = new Module[0];
+        private static readonly Module[] emptyModulesArray = new Module[0];
 
         /// <summary>
         /// Constructor, called from derived classes

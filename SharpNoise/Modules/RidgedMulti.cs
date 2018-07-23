@@ -103,7 +103,7 @@ namespace SharpNoise.Modules
         /// <summary>
         /// Gets or sets the frequency of the first octave.
         /// </summary>
-        public double Frequency { get; set; }
+        public double Frequency { get; set; } = DefaultFrequency;
 
         /// <summary>
         /// Gets or sets the lacunarity of the ridged-multifractal noise.
@@ -117,7 +117,7 @@ namespace SharpNoise.Modules
         /// </remarks>
         public double Lacunarity
         {
-            get { return lacunarity; }
+            get => lacunarity;
             set
             {
                 lacunarity = value;
@@ -128,7 +128,7 @@ namespace SharpNoise.Modules
         /// <summary>
         /// Gets or sets the quality of the ridged-multifractal noise.
         /// </summary>
-        public NoiseQuality Quality { get; set; }
+        public NoiseQuality Quality { get; set; } = DefaultQuality;
 
         /// <summary>
         /// Gets or sets the number of octaves that generate the
@@ -140,7 +140,7 @@ namespace SharpNoise.Modules
         /// </remarks>
         public int OctaveCount
         {
-            get { return octaves; }
+            get => octaves;
             set
             {
                 if (value > MaxOctaves)
@@ -153,11 +153,11 @@ namespace SharpNoise.Modules
         /// Gets or sets the seed value used by the ridged-multifractal-noise
         /// function.
         /// </summary>
-        public int Seed { get; set; }
+        public int Seed { get; set; } = DefaultSeed;
 
-        double[] spectralWeights;
-        double lacunarity;
-        int octaves;
+        private double[] spectralWeights;
+        private double lacunarity;
+        private int octaves;
 
         /// <summary>
         /// Constructor.
@@ -165,11 +165,8 @@ namespace SharpNoise.Modules
         public RidgedMulti()
             : base(0)
         {
-            Frequency = DefaultFrequency;
             Lacunarity = DefaultLacunarity;
-            Quality = DefaultQuality;
             OctaveCount = DefaultOctaveCount;
-            Seed = DefaultSeed;
         }
 
         /// <summary>
@@ -179,11 +176,11 @@ namespace SharpNoise.Modules
         {
             // This exponent parameter should be user-defined; it may be exposed in a
             // future version of libnoise.
-            double h = 1.0;
+            var h = 1.0;
 
             spectralWeights = new double[MaxOctaves];
 
-            double frequency = 1.0;
+            var frequency = 1.0;
             for (var i = 0; i < MaxOctaves; i++)
             {
                 // Compute weight for each frequency.
@@ -201,19 +198,19 @@ namespace SharpNoise.Modules
             y *= Frequency;
             z *= Frequency;
 
-            double signal = 0.0;
-            double value = 0.0;
-            double weight = 1.0;
+            var signal = 0.0;
+            var value = 0.0;
+            var weight = 1.0;
 
             // These parameters should be user-defined; they may be exposed in a
             // future version of libnoise.
-            double offset = 1.0;
-            double gain = 2.0;
+            var offset = 1.0;
+            var gain = 2.0;
 
             for (var curOctave = 0; curOctave < OctaveCount; curOctave++)
             {
                 // Get the coherent-noise value.
-                int seed = (Seed + curOctave) & 0x7fffffff;
+                var seed = (Seed + curOctave) & 0x7fffffff;
                 signal = NoiseGenerator.GradientCoherentNoise3D(x, y, z, seed, Quality);
 
                 // Make the ridges.
@@ -235,7 +232,7 @@ namespace SharpNoise.Modules
                     weight = 0.0;
 
                 // Add the signal to the output value.
-                value += (signal * spectralWeights[curOctave]);
+                value += signal * spectralWeights[curOctave];
 
                 // Go to the next octave.
                 x *= Lacunarity;
@@ -243,7 +240,7 @@ namespace SharpNoise.Modules
                 z *= Lacunarity;
             }
 
-            return (value * 1.25) - 1.0;
+            return value * 1.25 - 1.0;
         }
     }
 }

@@ -36,28 +36,25 @@ namespace SharpNoise.Modules
     [Serializable]
     public class Terrace : Module
     {
-        readonly List<double> controlPoints;
+        private readonly List<double> controlPoints;
 
         /// <summary>
         /// Gets the number of control points on the terrace-forming curve.
         /// </summary>
-        public int ControlPointCount { get { return controlPoints.Count; } }
+        public int ControlPointCount => controlPoints.Count;
 
         /// <summary>
         /// Enables or disables the inversion of the terrace-forming curve
         /// between the control points.
         /// </summary>
-        public bool InvertTerraces { get; set; }
+        public bool InvertTerraces { get; set; } = false;
 
         /// <summary>
         /// Gets or sets all ControlPoints in the Module
         /// </summary>
         public IEnumerable<double> ControlPoints
         {
-            get
-            {
-                return controlPoints.AsReadOnly();
-            }
+            get => controlPoints.AsReadOnly();
             set
             {
                 controlPoints.Clear();
@@ -70,8 +67,8 @@ namespace SharpNoise.Modules
         /// </summary>
         public Module Source0
         {
-            get { return SourceModules[0]; }
-            set { SourceModules[0] = value; }
+            get => SourceModules[0];
+            set => SourceModules[0] = value;
         }
 
         /// <summary>
@@ -81,7 +78,6 @@ namespace SharpNoise.Modules
             : base(1)
         {
             controlPoints = new List<double>();
-            InvertTerraces = false;
         }
 
         /// <summary>
@@ -136,9 +132,9 @@ namespace SharpNoise.Modules
 
             ClearControlPoints();
 
-            var terraceStep = 2.0 / ((double)count - 1.0);
+            var terraceStep = 2.0 / (count - 1.0);
             var curValue = -1.0;
-            for (var i = 0; i < (int)count; i++)
+            for (var i = 0; i < count; i++)
             {
                 AddControlPoint(curValue);
                 curValue += terraceStep;
@@ -156,7 +152,7 @@ namespace SharpNoise.Modules
         public override double GetValue(double x, double y, double z)
         {
             // Get the output value from the source module.
-            double sourceModuleValue = SourceModules[0].GetValue(x, y, z);
+            var sourceModuleValue = SourceModules[0].GetValue(x, y, z);
 
             // Find the first element in the control point array that has a value
             // larger than the output value from the source module.

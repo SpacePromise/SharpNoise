@@ -20,13 +20,7 @@ namespace SharpNoise
     /// </remarks>
     public class NoiseMap : Map<float>
     {
-        public override int UsedMemory
-        {
-            get
-            {
-                return values.Length * sizeof(float);
-            }
-        }
+        public override int UsedMemory => values.Length * sizeof(float);
 
         /// <summary>
         /// Constructor.
@@ -66,23 +60,23 @@ namespace SharpNoise
         {
             var dest = new NoiseMap(width, height);
 
-            float xratio = (float)src.Width / dest.Width;
-            float yratio = (float)src.Height / dest.Height;
+            var xratio = (float)src.Width / dest.Width;
+            var yratio = (float)src.Height / dest.Height;
 
             Parallel.For(0, dest.Height, y =>
             {
-                for (int x = 0; x < dest.Width; ++x)
+                for (var x = 0; x < dest.Width; ++x)
                 {
-                    float u = (x + 0.5f) * xratio - 0.5f;
-                    float v = (y + 0.5f) * yratio - 0.5f;
+                    var u = (x + 0.5f) * xratio - 0.5f;
+                    var v = (y + 0.5f) * yratio - 0.5f;
 
-                    int x0 = NoiseMath.FastFloor(u);
-                    int y0 = NoiseMath.FastFloor(v);
-                    int x1 = x0 + 1;
-                    int y1 = y0 + 1;
+                    var x0 = NoiseMath.FastFloor(u);
+                    var y0 = NoiseMath.FastFloor(v);
+                    var x1 = x0 + 1;
+                    var y1 = y0 + 1;
 
-                    float xf = u - x0;
-                    float yf = v - y0;
+                    var xf = u - x0;
+                    var yf = v - y0;
 
                     if (clamp)
                     {
@@ -92,12 +86,12 @@ namespace SharpNoise
                         y1 = NoiseMath.Clamp(y1, 0, src.Height - 1);
                     }
 
-                    float c00 = src.GetValue(x0, y0);
-                    float c01 = src.GetValue(x0, y1);
-                    float c10 = src.GetValue(x1, y0);
-                    float c11 = src.GetValue(x1, y1);
+                    var c00 = src.GetValue(x0, y0);
+                    var c01 = src.GetValue(x0, y1);
+                    var c10 = src.GetValue(x1, y0);
+                    var c11 = src.GetValue(x1, y1);
 
-                    float val = NoiseMath.Bilinear(xf, yf, c00, c01, c10, c11);
+                    var val = NoiseMath.Bilinear(xf, yf, c00, c01, c10, c11);
 
                     dest.SetValue(x, y, val);
                 }

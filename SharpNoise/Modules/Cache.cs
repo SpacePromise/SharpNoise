@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using System.Threading;
 
 namespace SharpNoise.Modules
@@ -30,26 +31,27 @@ namespace SharpNoise.Modules
     /// This noise module requires one source module.
     /// </remarks>
     [Serializable]
-    public class Cache : Module
+    public class Cache : Module, IDeserializationCallback, IDisposable
     {
-        class CacheEntry
+        private class CacheEntry
         {
-            public double x;
-            public double y;
-            public double z;
-            public double value;
+            public double X;
+            public double Y;
+            public double Z;
+            public double Value;
         }
 
-        [NonSerialized]
-        ThreadLocal<CacheEntry> localCacheEntry;
+        private bool disposedValue;
+
+        [NonSerialized] private ThreadLocal<CacheEntry> localCacheEntry = new ThreadLocal<CacheEntry>();
 
         /// <summary>
         /// Gets or sets the first source module
         /// </summary>
         public Module Source0
         {
-            get { return SourceModules[0]; }
-            set { SourceModules[0] = value; }
+            get => SourceModules[0];
+            set => SourceModules[0] = value;
         }
 
         /// <summary>
@@ -58,14 +60,19 @@ namespace SharpNoise.Modules
         public Cache()
             : base(1)
         {
-            localCacheEntry = new ThreadLocal<CacheEntry>();
         }
 
+        /// <summary>
+        /// Reset cached value
+        /// </summary>
+        /// <remarks>
+        /// Resets the cache for all threads
+        /// </remarks>
         public void ResetCache()
         {
-            if (localCacheEntry != null)
-                localCacheEntry.Dispose();
+            var oldCacheEntry = localCacheEntry;
             localCacheEntry = new ThreadLocal<CacheEntry>();
+            oldCacheEntry?.Dispose();
         }
 
         /// <summary>
@@ -78,24 +85,58 @@ namespace SharpNoise.Modules
         /// <returns>Returns the computed value</returns>
         public override double GetValue(double x, double y, double z)
         {
-            CacheEntry cache = localCacheEntry.Value;
+            var cached = localCacheEntry.Value;
 
-            if (cache != null)
+            if (cached != null)
             {
-                if (cache.x == x && cache.y == y && cache.z == z)
-                    return cache.value;
+                if (cached.X == x && cached.Y == y && cached.Z == z)
+                    return cached.Value;
             }
             else
             {
-                localCacheEntry.Value = cache = new CacheEntry();
+                localCacheEntry.Value = cached = new CacheEntry();
             }
 
-            cache.value = SourceModules[0].GetValue(x, y, z);
-            cache.x = x;
-            cache.y = y;
-            cache.z = z;
+            cached.Value = SourceModules[0].GetValue(x, y, z);
+            cached.X = x;
+            cached.Y = y;
+            cached.Z = z;
 
-            return cache.value;
+            return cached.Value;
         }
+
+        /// <summary>
+        /// Callback for .NET serialization to perform additional initialization after an object has been reconstructed
+        /// </summary>
+        /// <param name="sender">The sender object</param>
+        /// <seealso cref="IDeserializationCallback"/>
+        public virtual void OnDeserialization(object sender)
+        {
+            ResetCache();
+        }
+
+        #region IDisposable Support
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                }
+
+                localCacheEntry?.Dispose();
+
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        #endregion
     }
 }

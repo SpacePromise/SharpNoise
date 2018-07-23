@@ -11,16 +11,16 @@ namespace SharpNoise
         // A table of 256 random normalized vectors.  Each row is an (x, y, z, 0)
         // coordinate.  The 0 is used as padding so we can use bit shifts to index
         // any row in the table.
-        static readonly double[] vectortable = new double[1024];
+        private static readonly double[] vectortable = new double[1024];
 
         // Constants used by the current version of libnoise.
-        const int XNoiseGen = 1619;
-        const int YNoiseGen = 31337;
-        const int ZNoiseGen = 6971;
-        const int SeedNoiseGen = 1013;
-        const int ShiftNoiseGen = 8;
+        private const int XNoiseGen = 1619;
+        private const int YNoiseGen = 31337;
+        private const int ZNoiseGen = 6971;
+        private const int SeedNoiseGen = 1013;
+        private const int ShiftNoiseGen = 8;
 
-        static readonly double[] DefaultVectors =
+        private static readonly double[] DefaultVectors =
         {
             -0.763874, -0.596439, -0.246489, 0.0,
             0.396055, 0.904518, -0.158073, 0.0,
@@ -283,24 +283,12 @@ namespace SharpNoise
         /// <summary>
         /// Gets a read-only wrapper of the default Vector Table
         /// </summary>
-        public static ReadOnlyCollection<double> DefaultVectorTable
-        {
-            get
-            {
-                return Array.AsReadOnly(DefaultVectors);
-            }
-        }
+        public static ReadOnlyCollection<double> DefaultVectorTable => Array.AsReadOnly(DefaultVectors);
 
         /// <summary>
         /// Gets a read-only wrapper of the current Vector Table
         /// </summary>
-        public static ReadOnlyCollection<double> VectorTable
-        {
-            get
-            {
-                return Array.AsReadOnly(vectortable);
-            }
-        }
+        public static ReadOnlyCollection<double> VectorTable => Array.AsReadOnly(vectortable);
 
         /// <summary>
         /// ReInitialize the Noise Generator with a given vector table.
@@ -315,7 +303,7 @@ namespace SharpNoise
         public static void SetVectorTable(double[] table)
         {
             if (table == null)
-                throw new ArgumentNullException("table");
+                throw new ArgumentNullException(nameof(table));
             if (table.Length != vectortable.Length)
                 throw new ArgumentException("The given vector table isn't the right size (" + vectortable.Length + ")");
 
@@ -357,9 +345,9 @@ namespace SharpNoise
 
             for (var i = 0; i < vectortable.Length; i += 4)
             {
-                vectortable[i] = (rng.NextDouble() * 2D) - 1D;
-                vectortable[i + 1] = (rng.NextDouble() * 2D) - 1D;
-                vectortable[i + 2] = (rng.NextDouble() * 2D) - 1D;
+                vectortable[i] = rng.NextDouble() * 2D - 1D;
+                vectortable[i + 1] = rng.NextDouble() * 2D - 1D;
+                vectortable[i + 2] = rng.NextDouble() * 2D - 1D;
                 vectortable[i + 3] = 0D;
             }
 
@@ -391,11 +379,11 @@ namespace SharpNoise
         {
             // Create a unit-length cube aligned along an integer boundary.  This cube
             // surrounds the input point.
-            var x0 = (x > 0D ? (int)x : (int)x - 1);
+            var x0 = x > 0D ? (int)x : (int)x - 1;
             var x1 = x0 + 1;
-            var y0 = (y > 0D ? (int)y : (int)y - 1);
+            var y0 = y > 0D ? (int)y : (int)y - 1;
             var y1 = y0 + 1;
-            var z0 = (z > 0D ? (int)z : (int)z - 1);
+            var z0 = z > 0D ? (int)z : (int)z - 1;
             var z1 = z0 + 1;
 
             // Map the difference between the coordinates of the input value and the
@@ -404,19 +392,19 @@ namespace SharpNoise
             switch (noiseQuality)
             {
                 case NoiseQuality.Fast:
-                    xs = (x - (double)x0);
-                    ys = (y - (double)y0);
-                    zs = (z - (double)z0);
+                    xs = x - x0;
+                    ys = y - y0;
+                    zs = z - z0;
                     break;
                 case NoiseQuality.Standard:
-                    xs = NoiseMath.SCurve3(x - (double)x0);
-                    ys = NoiseMath.SCurve3(y - (double)y0);
-                    zs = NoiseMath.SCurve3(z - (double)z0);
+                    xs = NoiseMath.SCurve3(x - x0);
+                    ys = NoiseMath.SCurve3(y - y0);
+                    zs = NoiseMath.SCurve3(z - z0);
                     break;
                 case NoiseQuality.Best:
-                    xs = NoiseMath.SCurve5(x - (double)x0);
-                    ys = NoiseMath.SCurve5(y - (double)y0);
-                    zs = NoiseMath.SCurve5(z - (double)z0);
+                    xs = NoiseMath.SCurve5(x - x0);
+                    ys = NoiseMath.SCurve5(y - y0);
+                    zs = NoiseMath.SCurve5(z - z0);
                     break;
             }
 
@@ -424,21 +412,20 @@ namespace SharpNoise
             // the coherent-noise value at the input point, interpolate these eight
             // noise values using the S-curve value as the interpolant (trilinear
             // interpolation.)
-            double n0, n1, ix0, ix1, iy0, iy1;
-            n0 = GradientNoise3D(x, y, z, x0, y0, z0, seed);
-            n1 = GradientNoise3D(x, y, z, x1, y0, z0, seed);
-            ix0 = NoiseMath.Linear(n0, n1, xs);
+            var n0 = GradientNoise3D(x, y, z, x0, y0, z0, seed);
+            var n1 = GradientNoise3D(x, y, z, x1, y0, z0, seed);
+            var ix0 = NoiseMath.Linear(n0, n1, xs);
             n0 = GradientNoise3D(x, y, z, x0, y1, z0, seed);
             n1 = GradientNoise3D(x, y, z, x1, y1, z0, seed);
-            ix1 = NoiseMath.Linear(n0, n1, xs);
-            iy0 = NoiseMath.Linear(ix0, ix1, ys);
+            var ix1 = NoiseMath.Linear(n0, n1, xs);
+            var iy0 = NoiseMath.Linear(ix0, ix1, ys);
             n0 = GradientNoise3D(x, y, z, x0, y0, z1, seed);
             n1 = GradientNoise3D(x, y, z, x1, y0, z1, seed);
             ix0 = NoiseMath.Linear(n0, n1, xs);
             n0 = GradientNoise3D(x, y, z, x0, y1, z1, seed);
             n1 = GradientNoise3D(x, y, z, x1, y1, z1, seed);
             ix1 = NoiseMath.Linear(n0, n1, xs);
-            iy1 = NoiseMath.Linear(ix0, ix1, ys);
+            var iy1 = NoiseMath.Linear(ix0, ix1, ys);
 
             return NoiseMath.Linear(iy0, iy1, zs);
         }
@@ -490,31 +477,31 @@ namespace SharpNoise
                 // Randomly generate a gradient vector given the integer coordinates of the
                 // input value.  This implementation generates a random number and uses it
                 // as an index into a normalized-vector lookup table.
-                int vectorIndex = (
+                var vectorIndex = (
                     XNoiseGen * ix
                   + YNoiseGen * iy
                   + ZNoiseGen * iz
                   + SeedNoiseGen * seed)
                   & (int)0xffffffff;
-                vectorIndex ^= (vectorIndex >> ShiftNoiseGen);
+                vectorIndex ^= vectorIndex >> ShiftNoiseGen;
                 vectorIndex &= 0xff;
 
-                var xvGradient = vectortable[(vectorIndex << 2)];
+                var xvGradient = vectortable[vectorIndex << 2];
                 var yvGradient = vectortable[(vectorIndex << 2) + 1];
                 var zvGradient = vectortable[(vectorIndex << 2) + 2];
 
                 // Set up us another vector equal to the distance between the two vectors
                 // passed to this function.
-                var xvPoint = (fx - (double)ix);
-                var yvPoint = (fy - (double)iy);
-                var zvPoint = (fz - (double)iz);
+                var xvPoint = fx - ix;
+                var yvPoint = fy - iy;
+                var zvPoint = fz - iz;
 
                 // Now compute the dot product of the gradient vector with the distance
                 // vector.  The resulting value is gradient noise.  Apply a scaling value
                 // so that this noise value ranges from -1.0 to 1.0.
-                return ((xvGradient * xvPoint)
-                  + (yvGradient * yvPoint)
-                  + (zvGradient * zvPoint)) * 2.12;
+                return (xvGradient * xvPoint
+                  + yvGradient * yvPoint
+                  + zvGradient * zvPoint) * 2.12;
             }
         }
 
@@ -570,12 +557,12 @@ namespace SharpNoise
         {
             // Create a unit-length cube aligned along an integer boundary.  This cube
             // surrounds the input point.
-            int x0 = (x > 0.0 ? (int)x : (int)x - 1);
-            int x1 = x0 + 1;
-            int y0 = (y > 0.0 ? (int)y : (int)y - 1);
-            int y1 = y0 + 1;
-            int z0 = (z > 0.0 ? (int)z : (int)z - 1);
-            int z1 = z0 + 1;
+            var x0 = x > 0.0 ? (int)x : (int)x - 1;
+            var x1 = x0 + 1;
+            var y0 = y > 0.0 ? (int)y : (int)y - 1;
+            var y1 = y0 + 1;
+            var z0 = z > 0.0 ? (int)z : (int)z - 1;
+            var z1 = z0 + 1;
 
             // Map the difference between the coordinates of the input value and the
             // coordinates of the cube's outer-lower-left vertex onto an S-curve.
@@ -583,19 +570,19 @@ namespace SharpNoise
             switch (noiseQuality)
             {
                 case NoiseQuality.Fast:
-                    xs = (x - (double)x0);
-                    ys = (y - (double)y0);
-                    zs = (z - (double)z0);
+                    xs = x - x0;
+                    ys = y - y0;
+                    zs = z - z0;
                     break;
                 case NoiseQuality.Standard:
-                    xs = NoiseMath.SCurve3(x - (double)x0);
-                    ys = NoiseMath.SCurve3(y - (double)y0);
-                    zs = NoiseMath.SCurve3(z - (double)z0);
+                    xs = NoiseMath.SCurve3(x - x0);
+                    ys = NoiseMath.SCurve3(y - y0);
+                    zs = NoiseMath.SCurve3(z - z0);
                     break;
                 case NoiseQuality.Best:
-                    xs = NoiseMath.SCurve5(x - (double)x0);
-                    ys = NoiseMath.SCurve5(y - (double)y0);
-                    zs = NoiseMath.SCurve5(z - (double)z0);
+                    xs = NoiseMath.SCurve5(x - x0);
+                    ys = NoiseMath.SCurve5(y - y0);
+                    zs = NoiseMath.SCurve5(z - z0);
                     break;
             }
 
@@ -640,7 +627,7 @@ namespace SharpNoise
         /// </remarks>
         public static double ValueNoise3D(int x, int y, int z, int seed = 0)
         {
-            return 1.0 - ((double)IntValueNoise3D(x, y, z, seed) / 1073741824.0);
+            return 1.0 - IntValueNoise3D(x, y, z, seed) / 1073741824.0;
         }
     }
 }

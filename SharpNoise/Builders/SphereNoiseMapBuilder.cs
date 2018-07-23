@@ -87,7 +87,7 @@ namespace SharpNoise.Builders
 
         protected override void BuildImpl(CancellationToken cancellationToken)
         {
-            Sphere sphereModel = new Sphere(SourceModule);
+            var sphereModel = new Sphere(SourceModule);
 
             var lonExtent = EastLonBound - WestLonBound;
             var latExtent = NorthLatBound - SouthLatBound;
@@ -101,10 +101,10 @@ namespace SharpNoise.Builders
 
             Parallel.For(0, destHeight, po, y =>
             {
-                double curLat = SouthLatBound + y * yDelta;
+                var curLat = SouthLatBound + y * yDelta;
 
                 int x;
-                double curLon = WestLonBound;
+                var curLon = WestLonBound;
 
                 for (x = 0, curLon = WestLonBound; x < destWidth; x++, curLon += xDelta)
                 {

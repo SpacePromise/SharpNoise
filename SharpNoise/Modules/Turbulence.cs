@@ -125,8 +125,8 @@ namespace SharpNoise.Modules
         /// </summary>
         public Module Source0
         {
-            get { return SourceModules[0]; }
-            set { SourceModules[0] = value; }
+            get => SourceModules[0];
+            set => SourceModules[0] = value;
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace SharpNoise.Modules
         /// The power of the turbulence determines the scaling factor that is
         /// applied to the displacement amount.
         /// </remarks>
-        public double Power { get; set; }
+        public double Power { get; set; } = DefaultPower;
 
         /// <summary>
         /// Gets or sets the frequency of the turbulence.
@@ -147,10 +147,7 @@ namespace SharpNoise.Modules
         /// </remarks>
         public double Frequency
         {
-            get
-            {
-                return xDistort.Frequency;
-            }
+            get => xDistort.Frequency;
             set
             {
                 xDistort.Frequency = value;
@@ -170,10 +167,7 @@ namespace SharpNoise.Modules
         /// </remarks>
         public int Roughness 
         {
-            get 
-            { 
-                return xDistort.OctaveCount;
-            }
+            get => xDistort.OctaveCount;
             set
             {
                 xDistort.OctaveCount = value;
@@ -193,10 +187,7 @@ namespace SharpNoise.Modules
         /// </remarks>
         public int Seed
         {
-            get
-            {
-                return xDistort.Seed;
-            }
+            get => xDistort.Seed;
             set
             {
                 xDistort.Seed = value;
@@ -205,7 +196,7 @@ namespace SharpNoise.Modules
             }
         }
 
-        readonly Perlin xDistort, yDistort, zDistort;
+        private readonly Perlin xDistort, yDistort, zDistort;
 
         /// <summary>
         /// Constructor.
@@ -238,21 +229,18 @@ namespace SharpNoise.Modules
             // when multiplied by the frequency, are near an integer boundary. This is
             // due to a property of gradient coherent noise, which returns zero at
             // integer boundaries.
-            double x0, y0, z0;
-            double x1, y1, z1;
-            double x2, y2, z2;
-            x0 = x + (12414D / 65536D);
-            y0 = y + (65124D / 65536D);
-            z0 = z + (31337D / 65536D);
-            x1 = x + (26519D / 65536D);
-            y1 = y + (18128D / 65536D);
-            z1 = z + (60493D / 65536D);
-            x2 = x + (53820D / 65536D);
-            y2 = y + (11213D / 65536D);
-            z2 = z + (44845D / 65536D);
-            var xDistorted = x + (xDistort.GetValue(x0, y0, z0) * Power);
-            var yDistorted = y + (yDistort.GetValue(x1, y1, z1) * Power);
-            var zDistorted = z + (zDistort.GetValue(x2, y2, z2) * Power);
+            var x0 = x + 12414D / 65536D;
+            var y0 = y + 65124D / 65536D;
+            var z0 = z + 31337D / 65536D;
+            var x1 = x + 26519D / 65536D;
+            var y1 = y + 18128D / 65536D;
+            var z1 = z + 60493D / 65536D;
+            var x2 = x + 53820D / 65536D;
+            var y2 = y + 11213D / 65536D;
+            var z2 = z + 44845D / 65536D;
+            var xDistorted = x + xDistort.GetValue(x0, y0, z0) * Power;
+            var yDistorted = y + yDistort.GetValue(x1, y1, z1) * Power;
+            var zDistorted = z + zDistort.GetValue(x2, y2, z2) * Power;
 
             // Retrieve the output value at the offsetted input value instead of the
             // original input value.
